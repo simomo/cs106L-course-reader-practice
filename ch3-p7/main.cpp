@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  ch3-p6
+//  ch3-p7
 //
 //  Created by duozhang on 17/12/19.
 //  Copyright © 2017年 duozhang. All rights reserved.
@@ -11,6 +11,7 @@
 #include <string>
 using namespace std;
 
+
 // get one line from stdin
 string GetLine() {
     string ret;
@@ -20,46 +21,34 @@ string GetLine() {
 }
 
 // extract a int
-int get_int() {
-    int ret;
+void get_bool() {
+    string ret;
     
     while (true) {
         stringstream converter;
         converter << GetLine();
-        if (converter >> ret) {
+        if (converter >> ret && (ret == "true" || ret == "false")) {
             char remains;
             if (converter >> remains) {
                 cout << "Unexpected character: " << remains << endl;
             } else {
-                return ret;
+                bool r;
+                if (ret == "true") {
+                    r = true;
+                } else {
+                    r = false;
+                }
+                cout << boolalpha << r << endl;
             }
+            
         } else {
-            cout << "Please enter a int" << endl;
+            cout << "converter fail: " << boolalpha << converter.fail() << endl;
+            cout << "Please enter 'true' or 'false' ret: " << ret << endl;
         }
-    }
-}
-
-// extract a float
-float get_float() {
-    float ret;
-    
-    while (true) {
-        stringstream converter;
-        converter << GetLine();
-        if (converter >> ret) {
-            char remains;
-            if (converter >> remains) {
-                cout << "Unexpected character: " << remains << endl;
-            } else {
-                return ret;
-            }
-        } else {
-            cout << "Please enter a float" << endl;
-        }
+        
     }
 }
 
 int main(int argc, const char * argv[]) {
-    int a = get_int();
-    float b = get_float();
+    get_bool();
 }
