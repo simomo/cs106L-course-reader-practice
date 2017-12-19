@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  cs106-1
+//  ch3-p5
 //
-//  Created by duozhang on 17/12/5.
+//  Created by duozhang on 17/12/19.
 //  Copyright © 2017年 duozhang. All rights reserved.
 //
 
@@ -24,6 +24,6 @@ int main(int argc, const char * argv[]) {
     if (a != "100") {
         cout << "failed" << endl;
     } else {
-        cout << "success" << endl;
+        cout << "success!" << endl;
     }
 }
