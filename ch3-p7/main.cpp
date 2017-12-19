@@ -1,10 +1,4 @@
-//
-//  main.cpp
-//  ch3-p7
-//
-//  Created by duozhang on 17/12/19.
-//  Copyright © 2017年 duozhang. All rights reserved.
-//
+
 
 #include <iostream>
 #include <sstream>

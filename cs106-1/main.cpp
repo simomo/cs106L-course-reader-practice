@@ -1,10 +1,4 @@
-//
-//  main.cpp
-//  cs106-1
-//
-//  Created by duozhang on 17/12/5.
-//  Copyright © 2017年 duozhang. All rights reserved.
-//
+
 
 #include <iostream>
 #include <stdio.h>
