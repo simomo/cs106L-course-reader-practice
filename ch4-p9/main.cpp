@@ -10,7 +10,7 @@
 //#include "main.h"
 
 using namespace std;
-
+#
 enum Color {
 #define DEFINE_COLOR(color, opposite) color,
 #include "color.h"
