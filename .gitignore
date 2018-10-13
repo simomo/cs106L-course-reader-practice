@@ -1,5 +1,6 @@
 cs106-1.xcodeproj/
 
 *.swp
-
 *.out
+*.exe
+*.o
