@@ -45,9 +45,27 @@ void printTableBody() {
     }
 }
 
-int main() {
+void printTableBodyV2() {
+    ifstream sourceFile(SOURCE_FILE_NAME);
+
+    int intValue;
+    double doubleValue;
+
+    int rowNum = 0;
+    while (sourceFile >> intValue >> doubleValue) {
+        ++rowNum;
+        printEachBodyLine(rowNum, intValue, doubleValue);
+    }
+}
+
+int main(int argc, char* argv[]) {
     printTableHeader();
-    printTableBody();
+
+    if (argc == 1) {
+        printTableBody();
+    } else {
+        printTableBodyV2();
+    }
 
     return 0;
 }
