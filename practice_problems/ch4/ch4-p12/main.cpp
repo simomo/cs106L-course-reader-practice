@@ -20,12 +20,16 @@ struct Length {
 static LengthUnit SuffixStringToLengthUnit(string suffix);
 static Length ReadLength(void);
 static inline void PrintLength(Length length);
+static string GetUnitType(Length length);
+static string UnitToSuffix(LengthUnit unit);
+static string UnitToName(LengthUnit unit);
+static Length ConverterToMeters(Length length);
 
 
 int main() {
-    cout << SuffixStringToLengthUnit("aaaaa") << endl;
-
     PrintLength(ReadLength());
+    cout << GetUnitType(ReadLength()) << endl;
+    PrintLength(ConverterToMeters(ReadLength()));
     return 0;
 }
 
@@ -68,5 +72,37 @@ static Length ReadLength() {
 }
 
 static inline void PrintLength(Length length) {
-    cout << "Length[value=" << length.value << ", unit=" << length.unit << "]" << endl;
+    // cout << "Length[value=" << length.value << ", unit=" << length.unit << "]" << endl;
+    string suffix = UnitToSuffix(length.unit);
+    string unitName = UnitToName(length.unit);
+    cout << length.value << suffix << " (" << length.value << " " << unitName << "s)" << endl;
+}
+
+static string UnitToSuffix(LengthUnit unit) {
+    #define DEFINE_UNIT(unit_name, value, symbol, system) if (unit == eLengthUnit_##symbol) return #symbol;
+    #include "units.h"
+    #undef DEFINE_UNIT
+}
+
+static string UnitToName(LengthUnit unit) {
+    #define DEFINE_UNIT(unit_name, value, symbol, system) if (unit == eLengthUnit_##symbol) return #unit_name;
+    #include "units.h"
+    #undef DEFINE_UNIT
+}
+
+static string GetUnitType(Length length) {
+    #define DEFINE_UNIT(unit_name, value, symbol, system) if (length.unit == eLengthUnit_##symbol) return #system;
+    #include "units.h"
+    #undef DEFINE_UNIT
+}
+
+static Length ConverterToMeters(Length length) {
+    struct Length result;
+    #define DEFINE_UNIT(unit_name, absValue, symbol, system) \
+        if (length.unit == eLengthUnit_##symbol) {\
+            result = {length.value * absValue, eLengthUnit_m};\
+            return result;\
+        }
+    #include "units.h"
+    #undef DEFINE_UNIT
 }
