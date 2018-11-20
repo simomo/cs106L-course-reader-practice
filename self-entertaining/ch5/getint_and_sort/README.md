@@ -21,3 +21,15 @@ static void CleanSStream(stringstream& ss) {
 Reference:
 * https://stackoverflow.com/questions/2848087/how-to-clear-stringstream
 * https://stackoverflow.com/questions/20731/how-do-you-clear-a-stringstream-variable
+
+# The selection sort
+
+## Algorithm
+
+1. Find the smallest element of the vector and put it in position 0.
+2. Find the smallest element of the remainder of the vector and put it in position 1.
+3. Find the smallest element of the remainder of the vector and put it in position 2.
+
+## My notes
+
+`swapInts` is inspiring.
