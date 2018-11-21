@@ -2,6 +2,10 @@
 
 It must be `getline(cin, aString)`.
 
+# `values.insert(values.begin() + n, value)`
+
+This is how to do insert with STL vector.
+
 # What's v2 improved?
 
 Saving user input and sorting are at the same time.
