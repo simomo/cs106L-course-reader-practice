@@ -38,5 +38,4 @@ It's kind of `forward declaration`. By `incomplete type`, it means the class has
 
 To eliminate this error, you should `#include <fstream>` too.
 
-
 [1]: https://stackoverflow.com/a/32654464/807695

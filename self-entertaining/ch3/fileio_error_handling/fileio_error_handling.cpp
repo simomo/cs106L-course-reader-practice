@@ -21,6 +21,7 @@ int main() {
     cin >> fileName;
     cout << "I'm opening file: " << fileName << " for you" << endl;
     ifstream f (fileName.c_str());
+    // if (!f.is_open()) return -1;  // It can be optimized according to the article, but CS106L reader thinks it's neccessary.
     while (getline(f, line)) {
         processLine(line);
     }
