@@ -12,7 +12,7 @@ struct GameT {
 
 };
 
-static GetMapFileName(int retryLimit, ifstream& mapFile);
+static void GetMapFileName(int retryLimit, ifstream& mapFile);
 static vector<string> LoadWorldMap(ifstream& mapFile);
 
 int main() {
@@ -21,7 +21,7 @@ int main() {
     vector<string> worldMap = LoadWorldMap(mapFile);
 }
 
-static GetMapFileName(int retryLimit, ifstream& mapFile) {
+static void GetMapFileName(int retryLimit, ifstream& mapFile) {
     string fileName;
     cout << "Please enter the name of map file: " << endl;
 
