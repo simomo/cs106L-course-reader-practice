@@ -14,11 +14,13 @@ struct GameT {
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile);
 static vector<string> LoadWorldMap(ifstream& mapFile);
+static void PrintVector(vector<string>& values);
 
 int main() {
     ifstream mapFile;
     GetMapFileName(RetryLimit, mapFile);
     vector<string> worldMap = LoadWorldMap(mapFile);
+    PrintVector(worldMap);
 }
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile) {
@@ -43,10 +45,26 @@ static void GetMapFileName(int retryLimit, ifstream& mapFile) {
         break;
     }
 
+    cout << "Will use default one: sample_map.txt" << endl;
+    mapFile.open("sample_map.txt");
 }
 
 static vector<string> LoadWorldMap(ifstream& mapFile) {
     vector<string> worldMap;
 
+    string oneLine;
+    while(getline(mapFile, oneLine)) {
+        // cout << oneLine << endl;
+        worldMap.push_back(oneLine);
+    }
+
     return worldMap;
+}
+
+static void PrintVector(vector<string>& values) {
+    string oneLine;
+    vector<string>::iterator it;
+    for (it = values.begin(); it != values.end(); ++it) {
+        cout << *it << endl;
+    }
 }

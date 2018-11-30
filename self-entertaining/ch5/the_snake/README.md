@@ -10,3 +10,26 @@ Like the "snake", it's very different with the program I used to write, things l
  ## 2. Write down the skeleton implemenation
 
  ## 3. Fulfill each parts
+
+# Return a local `vector` from a function
+
+According to [this](https://stackoverflow.com/a/15704602/807695), in C++, it will returned by value.
+```c++
+std::vector<string> f() {
+    std::vector<string> v;
+    return v;
+}
+```
+
+# Iterate a vector
+
+It will be learned at the next chapter.
+```c++
+static void PrintVector(vector<string>& values) {
+    string oneLine;
+    vector<string>::iterator it;
+    for (it = values.begin(); it != values.end(); ++it) {
+        cout << *it << endl;
+    }
+}
+```
