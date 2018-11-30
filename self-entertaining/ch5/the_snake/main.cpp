@@ -18,9 +18,11 @@ static void PrintVector(vector<string>& values);
 
 int main() {
     ifstream mapFile;
+    GameT theGame;
+
     GetMapFileName(RetryLimit, mapFile);
-    vector<string> worldMap = LoadWorldMap(mapFile);
-    PrintVector(worldMap);
+    theGame.gameMap = LoadWorldMap(mapFile);
+    PrintVector(theGame.gameMap);
 }
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile) {
