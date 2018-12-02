@@ -2,27 +2,49 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <stdlib.h>
 
 using namespace std;
 
 const int RetryLimit = 3;
 
+struct Coordinate {
+    int x;
+    int y;
+};
+
 struct GameT {
     vector<string> gameMap;
+    int mapWidth;
+    int mapHeight;
 
+    Coordinate headPos;
+    Coordinate speed;
+
+    int snakeLen;
 };
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile);
-static vector<string> LoadWorldMap(ifstream& mapFile);
+static vector<string> LoadWorldMap(GameT& theGame, ifstream& mapFile);
 static void PrintVector(vector<string>& values);
+static void GenerateInitParams(GameT& theGame);
+static Coordinate GenerateRandPos(int mapWidth, int mapHeight);
 
 int main() {
     ifstream mapFile;
     GameT theGame;
 
     GetMapFileName(RetryLimit, mapFile);
-    theGame.gameMap = LoadWorldMap(mapFile);
+    LoadWorldMap(theGame, mapFile);
     PrintVector(theGame.gameMap);
+
+    GenerateInitParams(theGame);
+
+    while(!Win(theGame)) {
+        OneStep(theGame);
+        Display(theGame);
+        RunAI(theGame);
+    }
 }
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile) {
@@ -51,7 +73,7 @@ static void GetMapFileName(int retryLimit, ifstream& mapFile) {
     mapFile.open("sample_map.txt");
 }
 
-static vector<string> LoadWorldMap(ifstream& mapFile) {
+static vector<string> LoadWorldMap(GameT& theGame, ifstream& mapFile) {
     vector<string> worldMap;
 
     string oneLine;
@@ -60,7 +82,10 @@ static vector<string> LoadWorldMap(ifstream& mapFile) {
         worldMap.push_back(oneLine);
     }
 
-    return worldMap;
+    theGame.gameMap = worldMap;
+
+    theGame.mapWidth = worldMap[0].size();
+    theGame.mapHeight = worldMap.size();
 }
 
 static void PrintVector(vector<string>& values) {
@@ -69,4 +94,23 @@ static void PrintVector(vector<string>& values) {
     for (it = values.begin(); it != values.end(); ++it) {
         cout << *it << endl;
     }
+}
+
+static void GenerateInitParams(GameT& theGame) {
+    Coordinate candidate;
+    while (true) {
+        candidate = GenerateRandPos(theGame.mapWidth, theGame.mapHeight);
+        if (PosIsEmpty(candidate)) {
+            break;
+        }
+    }
+
+    theGame.headPos = candidate;
+    theGame.speed = GenerateRandSpeed();
+}
+
+static Coordinate GenerateRandPos(int mapWidth, int mapHeight) {
+    Coordinate point;
+    point.x = rand() % mapWidth;
+    point.y = rand() % mapHeight;
 }
