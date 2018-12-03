@@ -6,8 +6,6 @@
 
 using namespace std;
 
-const int RetryLimit = 3;
-
 struct Coordinate {
     int x;
     int y;
@@ -24,11 +22,21 @@ struct GameT {
     int snakeLen;
 };
 
+const int RetryLimit = 3;
+const char Wall = '#';
+const char Food = '$';
+const char Empty = ' ';
+
+const vector<Coordinate> FourDir = {{0, 0}, {1, 0}, {1, 0}, {1, 1}};
+
 static void GetMapFileName(int retryLimit, ifstream& mapFile);
 static vector<string> LoadWorldMap(GameT& theGame, ifstream& mapFile);
 static void PrintVector(vector<string>& values);
 static void GenerateInitParams(GameT& theGame);
 static Coordinate GenerateRandPos(int mapWidth, int mapHeight);
+static inline bool PosIsEmpty(const GameT& theGame, const Coordinate& candidate);
+static Coordinate GenerateRandSpeed(void);
+static inline Coordinate GenerateRandSpeed(void);
 
 int main() {
     ifstream mapFile;
@@ -100,17 +108,28 @@ static void GenerateInitParams(GameT& theGame) {
     Coordinate candidate;
     while (true) {
         candidate = GenerateRandPos(theGame.mapWidth, theGame.mapHeight);
-        if (PosIsEmpty(candidate)) {
+        if (PosIsEmpty(theGame, candidate)) {
             break;
         }
     }
 
     theGame.headPos = candidate;
     theGame.speed = GenerateRandSpeed();
+
+    theGame.snakeLen = 1;
 }
 
 static Coordinate GenerateRandPos(int mapWidth, int mapHeight) {
     Coordinate point;
     point.x = rand() % mapWidth;
     point.y = rand() % mapHeight;
+}
+
+
+static inline bool PosIsEmpty(const GameT& theGame, const Coordinate& candidate) {
+    return theGame.gameMap[candidate.y][candidate.x] == Empty;
+}
+
+static inline Coordinate GenerateRandSpeed(void) {
+    return FourDir[rand() % 4];
 }
