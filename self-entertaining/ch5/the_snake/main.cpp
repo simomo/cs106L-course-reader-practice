@@ -16,12 +16,13 @@ struct GameT {
     int mapWidth;
     int mapHeight;
 
-    Coordinate headPos;
+    vector<Coordinate> theSnake;
     Coordinate speed;
 
     int snakeLen;
 };
 
+const int winLen = 5;
 const int RetryLimit = 3;
 const char Wall = '#';
 const char Food = '$';
@@ -37,6 +38,10 @@ static Coordinate GenerateRandPos(int mapWidth, int mapHeight);
 static inline bool PosIsEmpty(const GameT& theGame, const Coordinate& candidate);
 static Coordinate GenerateRandSpeed(void);
 static inline Coordinate GenerateRandSpeed(void);
+static inline bool Win(GameT& theGame);
+static void Display(GameT& theGame);
+static void RunAI(GameT& theGame);
+static void OneStep(GameT& theGame);
 
 int main() {
     ifstream mapFile;
@@ -49,9 +54,9 @@ int main() {
     GenerateInitParams(theGame);
 
     while(!Win(theGame)) {
-        OneStep(theGame);
         Display(theGame);
         RunAI(theGame);
+        OneStep(theGame);
     }
 }
 
@@ -113,7 +118,7 @@ static void GenerateInitParams(GameT& theGame) {
         }
     }
 
-    theGame.headPos = candidate;
+    theGame.theSnake = {candidate};
     theGame.speed = GenerateRandSpeed();
 
     theGame.snakeLen = 1;
@@ -133,3 +138,11 @@ static inline bool PosIsEmpty(const GameT& theGame, const Coordinate& candidate)
 static inline Coordinate GenerateRandSpeed(void) {
     return FourDir[rand() % 4];
 }
+
+static inline bool Win(GameT& theGame) {
+    return theGame.snakeLen >= winLen;
+}
+
+static void Display(GameT& theGame) {}
+static void RunAI(GameT& theGame) {}
+static void OneStep(GameT& theGame) {}
