@@ -28,6 +28,12 @@ const char Wall = '#';
 const char Food = '$';
 const char Empty = ' ';
 
+#ifdef _WIN32
+const string clearCMD = "CLS";
+#else
+const string clearCMD = "clear";
+#endif
+
 const vector<Coordinate> FourDir = {{0, 0}, {1, 0}, {1, 0}, {1, 1}};
 
 static void GetMapFileName(int retryLimit, ifstream& mapFile);
@@ -42,6 +48,7 @@ static inline bool Win(GameT& theGame);
 static void Display(GameT& theGame);
 static void RunAI(GameT& theGame);
 static void OneStep(GameT& theGame);
+static void eraseTheConsole();
 
 int main() {
     ifstream mapFile;
@@ -143,6 +150,12 @@ static inline bool Win(GameT& theGame) {
     return theGame.snakeLen >= winLen;
 }
 
-static void Display(GameT& theGame) {}
+static void Display(GameT& theGame) {
+    eraseTheConsole();
+}
 static void RunAI(GameT& theGame) {}
 static void OneStep(GameT& theGame) {}
+
+static void eraseTheConsole() {
+    system(clearCMD.c_str());
+}
