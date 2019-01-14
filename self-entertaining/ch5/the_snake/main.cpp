@@ -49,6 +49,7 @@ static void Display(GameT& theGame);
 static void RunAI(GameT& theGame);
 static void OneStep(GameT& theGame);
 static void eraseTheConsole();
+static vector<string> combineMapAndSnake(GameT& theGame);
 
 int main() {
     ifstream mapFile;
@@ -152,10 +153,18 @@ static inline bool Win(GameT& theGame) {
 
 static void Display(GameT& theGame) {
     eraseTheConsole();
+    vector<string> snakeOnMap = combineMapAndSnake(theGame);
 }
-static void RunAI(GameT& theGame) {}
-static void OneStep(GameT& theGame) {}
 
 static void eraseTheConsole() {
     system(clearCMD.c_str());
 }
+
+static vector<string> combineMapAndSnake(GameT& theGame) {
+    for (int i = 0; i < theGame.snakeLen; i++) {
+        theGame.theSnake[i]
+    }
+}
+
+static void RunAI(GameT& theGame) {}
+static void OneStep(GameT& theGame) {}
