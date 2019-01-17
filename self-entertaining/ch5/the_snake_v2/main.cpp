@@ -1,4 +1,5 @@
 #include <vector>
+#include <deque>
 #include <string>
 #include <fstream>
 
@@ -12,7 +13,7 @@ struct PointT {
 struct GameWorld {
     vector<string> gameMap;
 
-    vector<PointT> snake;
+    deque<PointT> snake;
     PointT snakeSpeed;
 };
 
