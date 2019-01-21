@@ -57,5 +57,7 @@ static void openMapFile(ifstream& gameMapFile) {
     }
 }
 
-static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {}
+static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
+    
+}
 static void runSimulation(GameWorld& gameWorld) {}
