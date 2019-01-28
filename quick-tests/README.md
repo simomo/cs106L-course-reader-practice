@@ -1,0 +1,1 @@
+# Let's put common tasks here as code kata tests
