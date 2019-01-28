@@ -8,6 +8,12 @@
 
 using namespace std;
 
+const int maxFood = 20;
+const char emptyTile = ' ';
+const char wallTile = '#';
+const char foodTile = '$';
+const char snakeTile = '*';
+
 struct PointT {
     int x;
     int y;
@@ -58,6 +64,6 @@ static void openMapFile(ifstream& gameMapFile) {
 }
 
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
-    
+
 }
 static void runSimulation(GameWorld& gameWorld) {}
