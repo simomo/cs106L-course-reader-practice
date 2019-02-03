@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 #include "myLib.h"
 
@@ -64,6 +65,22 @@ static void openMapFile(ifstream& gameMapFile) {
 }
 
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
+    gameMapFile >> gameWorld.snakeSpeed.x >> gameWorld.snakeSpeed.y;
+
+    /*
+     * # Why we have this `dummy`?
+     *  the first call to getline after using the stream extraction operator
+     * will return the empty string because the newline character delimiting
+     * the data is still waiting to be read. 
+     */
+    string dummy;
+    getline(gameMapFile, dummy);
+
+    // TODO: get lenght and width, then resize
+    string oneLine;
+    while (getline(gameMapFile, oneLine)) {
+        
+    }
 
 }
 static void runSimulation(GameWorld& gameWorld) {}
