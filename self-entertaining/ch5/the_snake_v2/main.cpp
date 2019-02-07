@@ -25,6 +25,9 @@ struct GameWorld {
 
     deque<PointT> snake;
     PointT snakeSpeed;
+
+    int numRow;
+    int numCol;
 };
 
 static void initGame(GameWorld& gameWorld);
@@ -65,6 +68,9 @@ static void openMapFile(ifstream& gameMapFile) {
 }
 
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
+    gameMapFile >> gameWorld.numRow >> gameWorld.numCol;
+    // TODO: What if I don't resize?
+    gameWorld.gameMap.resize(gameWorld.numRow);
     gameMapFile >> gameWorld.snakeSpeed.x >> gameWorld.snakeSpeed.y;
 
     /*
@@ -76,10 +82,18 @@ static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
     string dummy;
     getline(gameMapFile, dummy);
 
-    // TODO: get lenght and width, then resize
-    string oneLine;
-    while (getline(gameMapFile, oneLine)) {
-        
+    // int lineNum = 0;
+    // string oneLine;
+    // while (getline(gameMapFile, oneLine)) {
+    //     gameWorld.gameMap[lineNum] = oneLine;
+    //     lineNum++;
+    // }
+    for (int i=0; i<gameWorld.numRow; i++) {
+        string oneLine;
+        if (getline(gameMapFile, oneLine)) {
+            gameWorld.gameMap[i] = oneLine;
+            // TODO: Find the head
+        }
     }
 
 }
