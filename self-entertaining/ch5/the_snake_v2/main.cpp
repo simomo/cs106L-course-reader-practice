@@ -34,6 +34,7 @@ static void initGame(GameWorld& gameWorld);
 static void openMapFile(ifstream& gameMapFile);
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile);
 static void runSimulation(GameWorld& gameWorld);
+static PointT makePoint(int x, int y);
 
 int main() {
     ifstream gameMapFile;
@@ -69,7 +70,13 @@ static void openMapFile(ifstream& gameMapFile) {
 
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
     gameMapFile >> gameWorld.numRow >> gameWorld.numCol;
-    // TODO: What if I don't resize?
+    /* # `resize` vs `reverse` vs `push_back`
+     *
+     * https://stackoverflow.com/a/7397862/807695
+     * https://stackoverflow.com/a/4821069/807695
+     * https://stackoverflow.com/a/1902900/807695
+     * 
+     */
     gameWorld.gameMap.resize(gameWorld.numRow);
     gameMapFile >> gameWorld.snakeSpeed.x >> gameWorld.snakeSpeed.y;
 
@@ -92,9 +99,23 @@ static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
         string oneLine;
         if (getline(gameMapFile, oneLine)) {
             gameWorld.gameMap[i] = oneLine;
-            // TODO: Find the head
+            // Find the snake head
+            string::size_type snakePos = oneLine.find(snakeTile);
+            if (snakePos != string::npos) {
+                gameWorld.snake.push_back(makePoint(snakePos, i));
+            }
         }
     }
 
 }
-static void runSimulation(GameWorld& gameWorld) {}
+
+static PointT makePoint(int x, int y) {
+    PointT result;
+    result.x = x;
+    result.y = y;
+    return result;
+}
+
+static void runSimulation(GameWorld& gameWorld) {
+    // TODO:
+}
