@@ -70,7 +70,7 @@ static void openMapFile(ifstream& gameMapFile) {
 
 static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
     gameMapFile >> gameWorld.numRow >> gameWorld.numCol;
-    /* # `resize` vs `reverse` vs `push_back`
+    /* # `resize` vs `reserve` vs `push_back`
      *
      * https://stackoverflow.com/a/7397862/807695
      * https://stackoverflow.com/a/4821069/807695
@@ -116,6 +116,32 @@ static PointT makePoint(int x, int y) {
     return result;
 }
 
+/* 
+ * According to the gameWorld.snakeSpeed, update the snake's position as well as
+ * the map
+ */
+static void moveSnake(GameWorld& gameWorld) {
+
+}
+
+/* 
+ * Clear current screen and show the map
+ */
+static void refreshScreen(GameWorld& gameWorld) {
+
+}
+
+/* 
+ * Check the snake's status, make decision on the next move
+ */
+static void makeDecision(GameWorld& gameWorld) {
+
+}
+
 static void runSimulation(GameWorld& gameWorld) {
-    // TODO:
+    // TODO: Check if I'm right about these steps :P
+    moveSnake(gameWorld);
+    refreshScreen(gameWorld);
+    makeDecision(gameWorld);
+    // putFood(gameWorld);  // drop new food into the map
 }
