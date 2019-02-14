@@ -120,7 +120,7 @@ static PointT makePoint(int x, int y) {
  * According to the gameWorld.snakeSpeed, update the snake's position as well as
  * the map
  */
-static void moveSnake(GameWorld& gameWorld) {
+static bool moveSnake(GameWorld& gameWorld) {
 
 }
 
@@ -138,10 +138,25 @@ static void makeDecision(GameWorld& gameWorld) {
 
 }
 
+static void displayResult(GameWorld& gameWorld) {
+
+}
+
 static void runSimulation(GameWorld& gameWorld) {
-    // TODO: Check if I'm right about these steps :P
-    moveSnake(gameWorld);
-    refreshScreen(gameWorld);
-    makeDecision(gameWorld);
-    // putFood(gameWorld);  // drop new food into the map
+    // Q:Check if I'm right about these steps :P
+    // A:I was terribly wrong:
+    //     1. it only implements one step/move of the snake,
+    //     2. it doesn't consider when the game ends.
+    //     3. it doesn't consider when the snake crash
+    // Why is my thinking so shallow?
+    while (gameWorld.snake.size() < maxFood) {
+        refreshScreen(gameWorld);
+        makeDecision(gameWorld);
+        if (moveSnake(gameWorld)) {
+            break;
+        }
+        // putFood(gameWorld);  // drop new food into the map
+    }
+
+    displayResult(gameWorld);
 }
