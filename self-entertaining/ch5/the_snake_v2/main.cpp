@@ -143,12 +143,16 @@ static void displayResult(GameWorld& gameWorld) {
 }
 
 static void runSimulation(GameWorld& gameWorld) {
-    // Q:Check if I'm right about these steps :P
-    // A:I was terribly wrong:
+    // Q: Check if I'm right about these steps :P
+    // A: I was terribly wrong:
     //     1. it only implements one step/move of the snake,
     //     2. it doesn't consider when the game ends.
     //     3. it doesn't consider when the snake crash
-    // Why is my thinking so shallow?
+
+    // Q: Why is my thinking so shallow?
+    /* A: I always tend to satisfy with my first idea about one problem, I should
+          be more patient/confidence and give myself more time to think deeper.
+     */
     while (gameWorld.snake.size() < maxFood) {
         refreshScreen(gameWorld);
         makeDecision(gameWorld);
