@@ -37,11 +37,6 @@ static void runSimulation(GameWorld& gameWorld);
 static PointT makePoint(int x, int y);
 
 int main() {
-    ifstream gameMapFile;
-    openMapFile(gameMapFile);
-}
-
-int _main() {
     GameWorld gameWorld;
     initGame(gameWorld);
     runSimulation(gameWorld);
@@ -64,7 +59,7 @@ static void openMapFile(ifstream& gameMapFile) {
         // gameMapFile.open(fileName.c_str());
         if (gameMapFile.is_open()) break;
 
-        cout << "Your input " << fileName << " can not be opened";
+        cout << "Your input " << fileName << " can not be opened" << endl;
     }
 }
 
@@ -128,7 +123,11 @@ static bool moveSnake(GameWorld& gameWorld) {
  * Clear current screen and show the map
  */
 static void refreshScreen(GameWorld& gameWorld) {
+    int mapRol = gameWorld.gameMap.size();
 
+    for (int i=0; i<mapRol; i++) {
+        cout << gameWorld.gameMap[i] << endl;
+    }
 }
 
 /* 
@@ -159,6 +158,7 @@ static void runSimulation(GameWorld& gameWorld) {
         if (moveSnake(gameWorld)) {
             break;
         }
+        break;  // Test code
         // putFood(gameWorld);  // drop new food into the map
     }
 
