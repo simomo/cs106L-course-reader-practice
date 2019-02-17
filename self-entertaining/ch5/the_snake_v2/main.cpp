@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>  // system
 
 #include "myLib.h"
 
@@ -123,6 +124,7 @@ static bool moveSnake(GameWorld& gameWorld) {
  * Clear current screen and show the map
  */
 static void refreshScreen(GameWorld& gameWorld) {
+    system("clear");
     int mapRol = gameWorld.gameMap.size();
 
     for (int i=0; i<mapRol; i++) {
