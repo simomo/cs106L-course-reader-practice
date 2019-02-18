@@ -19,12 +19,21 @@ const char snakeTile = '*';
 struct PointT {
     int x;
     int y;
+
+    PointT operator+(const PointT& right) {
+        PointT result;
+        result.x = this->x + right.x;
+        result.y = this->y + right.y;
+
+        return result;
+    }
 };
 
 struct GameWorld {
     vector<string> gameMap;
 
     deque<PointT> snake;
+    /* Only can be one of 4 values (0, 1), (0, -1), (1, 0), (-1, 0) */
     PointT snakeSpeed;
 
     int numRow;
@@ -117,7 +126,11 @@ static PointT makePoint(int x, int y) {
  * the map
  */
 static bool moveSnake(GameWorld& gameWorld) {
+    gameWorld.snake.pop_back();
+    PointT newHead = gameWorld.snake[0] + gameWorld.snakeSpeed;
+    gameWorld.snake.push_front(newHead);
 
+    return true;
 }
 
 /* 
