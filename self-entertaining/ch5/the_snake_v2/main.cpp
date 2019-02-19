@@ -126,10 +126,15 @@ static PointT makePoint(int x, int y) {
  * the map
  */
 static bool moveSnake(GameWorld& gameWorld) {
+    PointT oldTail = gameWorld.snake.back();
     gameWorld.snake.pop_back();
+
     PointT newHead = gameWorld.snake[0] + gameWorld.snakeSpeed;
     gameWorld.snake.push_front(newHead);
 
+    // update the snake in gameWorld.gameMap
+    gameWorld.gameMap[oldTail.y][oldTail.x] = emptyTile;
+    gameWorld.gameMap[newHead.y][newHead.x] = snakeTile;
     return true;
 }
 
@@ -173,6 +178,7 @@ static void runSimulation(GameWorld& gameWorld) {
         if (moveSnake(gameWorld)) {
             break;
         }
+        refreshScreen(gameWorld);  // TODO: Why not work?
         break;  // Test code
         // putFood(gameWorld);  // drop new food into the map
     }
