@@ -175,7 +175,7 @@ static void runSimulation(GameWorld& gameWorld) {
     while (gameWorld.snake.size() < maxFood) {
         refreshScreen(gameWorld);
         makeDecision(gameWorld);
-        if (moveSnake(gameWorld)) {
+        if (!moveSnake(gameWorld)) {
             break;
         }
         refreshScreen(gameWorld);  // TODO: Why not work?
