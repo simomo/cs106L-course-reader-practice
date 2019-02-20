@@ -159,7 +159,11 @@ static void refreshScreen(GameWorld& gameWorld) {
  * Check the snake's status, make decision on the next move
  */
 static void makeDecision(GameWorld& gameWorld) {
+    // Get possible speeds
 
+    // Filter speeds to avoid crashing
+
+    // Randomly choose one if there are more than one speeds
 }
 
 static void displayResult(GameWorld& gameWorld) {
