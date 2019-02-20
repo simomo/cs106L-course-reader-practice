@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>  // system
+#include <chrono>  // sleep_for
+#include <thread>  // sleep_for
 
 #include "myLib.h"
 
@@ -148,6 +150,9 @@ static void refreshScreen(GameWorld& gameWorld) {
     for (int i=0; i<mapRol; i++) {
         cout << gameWorld.gameMap[i] << endl;
     }
+
+    // Pause 1 second, so that we can see what happened
+    this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
 
 /* 
@@ -178,8 +183,6 @@ static void runSimulation(GameWorld& gameWorld) {
         if (!moveSnake(gameWorld)) {
             break;
         }
-        refreshScreen(gameWorld);  // TODO: Why not work?
-        break;  // Test code
         // putFood(gameWorld);  // drop new food into the map
     }
 
