@@ -7,6 +7,7 @@
 #include <stdlib.h>  // system
 #include <chrono>  // sleep_for
 #include <thread>  // sleep_for
+#include <assert.h>
 
 #include "myLib.h"
 
@@ -145,8 +146,8 @@ static bool moveSnake(GameWorld& gameWorld) {
  */
 static void refreshScreen(GameWorld& gameWorld) {
     system("clear");
-    int mapRol = gameWorld.gameMap.size();
 
+    int mapRol = gameWorld.gameMap.size();
     for (int i=0; i<mapRol; i++) {
         cout << gameWorld.gameMap[i] << endl;
     }
@@ -155,12 +156,33 @@ static void refreshScreen(GameWorld& gameWorld) {
     this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
 
+static void getPossibleSpeeds(const PointT& currentSpeed,  // IN
+                              vector<PointT>& possibleSpeeds) {  // OUT
+    assert(currentSpeed.x == 0 || currentSpeed.y == 0);
+    assert(!(currentSpeed.x == 0 && currentSpeed.y == 0));
+
+    if (currentSpeed.x == 0) {
+        possibleSpeeds = {
+            {0, currentSpeed.y},
+            {1, 0},
+            {-1, 0}
+        };
+    } else {
+        possibleSpeeds = {
+            {currentSpeed.x, 0},
+            {0, 1},
+            {0, -1}
+        };
+    }
+}
+
 /* 
  * Check the snake's status, make decision on the next move
  */
 static void makeDecision(GameWorld& gameWorld) {
     // Get possible speeds
-
+    vector<PointT> possibleSpeeds;
+    getPossibleSpeeds(gameWorld.snakeSpeed, possibleSpeeds);
     // Filter speeds to avoid crashing
 
     // Randomly choose one if there are more than one speeds
