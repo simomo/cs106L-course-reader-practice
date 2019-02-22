@@ -4,10 +4,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stdlib.h>  // system
+#include <stdlib.h>  // system, rand
 #include <chrono>  // sleep_for
 #include <thread>  // sleep_for
 #include <assert.h>
+#include <algorithm>  // copy_if
 
 #include "myLib.h"
 
@@ -176,6 +177,15 @@ static void getPossibleSpeeds(const PointT& currentSpeed,  // IN
     }
 }
 
+static void pickOne(const vector<PointT> candidates,  // IN
+                    GameWorld& gameWorld) {  // OUT
+    int index;
+    auto it = candidates.begin();
+    advance(it, index);
+    // TODO: FIX the compile error
+    gameWorld.snakeSpeed = candidates[index];
+}
+
 /* 
  * Check the snake's status, make decision on the next move
  */
@@ -184,8 +194,21 @@ static void makeDecision(GameWorld& gameWorld) {
     vector<PointT> possibleSpeeds;
     getPossibleSpeeds(gameWorld.snakeSpeed, possibleSpeeds);
     // Filter speeds to avoid crashing
+    vector<PointT> safeChoices = copy_if(
+        possibleSpeeds.begin(),
+        possibleSpeeds.end(),
+        safeChoices,
+        [&](PointT i) {
+            PointT next = gameWorld.snake[0] + i;
+            return gameWorld.gameMap[next.y][next.x] == emptyTile;
+        });
 
     // Randomly choose one if there are more than one speeds
+    if (safeChoices.empty()) {
+        pickOne(possibleSpeeds, gameWorld);
+    } else {
+        pickOne(safeChoices, gameWorld);
+    }
 }
 
 static void displayResult(GameWorld& gameWorld) {
