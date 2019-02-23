@@ -9,6 +9,8 @@
 #include <thread>  // sleep_for
 #include <assert.h>
 #include <algorithm>  // copy_if
+#include <random>  // random things...
+#include <iterator>  // back_insert
 
 #include "myLib.h"
 
@@ -30,6 +32,12 @@ struct PointT {
         result.y = this->y + right.y;
 
         return result;
+    }
+
+    string toString() {
+        stringstream fmt;
+        fmt << "[x=" << x << ", y=" << y << "]";
+        return fmt.str();
     }
 };
 
@@ -56,6 +64,7 @@ int main() {
     runSimulation(gameWorld);
     return 0;
 }
+
 
 static void initGame(GameWorld& gameWorld) {
     ifstream gameMapFile;
@@ -112,6 +121,7 @@ static void loadGame(GameWorld& gameWorld, ifstream& gameMapFile) {
             string::size_type snakePos = oneLine.find(snakeTile);
             if (snakePos != string::npos) {
                 gameWorld.snake.push_back(makePoint(snakePos, i));
+                // cout << "snake size: " << gameWorld.snake.size();
             }
         }
     }
@@ -180,9 +190,12 @@ static void getPossibleSpeeds(const PointT& currentSpeed,  // IN
 static void pickOne(const vector<PointT> candidates,  // IN
                     GameWorld& gameWorld) {  // OUT
     int index;
-    auto it = candidates.begin();
-    advance(it, index);
-    // TODO: FIX the compile error
+    static random_device rd;
+    static mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, candidates.size() - 1);
+    index = dis(gen);
+
+    // cout << candidates.size() << " " << index << endl;
     gameWorld.snakeSpeed = candidates[index];
 }
 
@@ -191,17 +204,30 @@ static void pickOne(const vector<PointT> candidates,  // IN
  */
 static void makeDecision(GameWorld& gameWorld) {
     // Get possible speeds
+    vector<PointT> safeChoices;
     vector<PointT> possibleSpeeds;
     getPossibleSpeeds(gameWorld.snakeSpeed, possibleSpeeds);
+
+    // cout << "possibleSpeeds" << endl;
+    // for (auto i: possibleSpeeds) {
+    //     cout << i.toString() << ' ';
+    // }
+
     // Filter speeds to avoid crashing
-    vector<PointT> safeChoices = copy_if(
+    copy_if(
         possibleSpeeds.begin(),
         possibleSpeeds.end(),
-        safeChoices,
+        back_inserter(safeChoices),
         [&](PointT i) {
             PointT next = gameWorld.snake[0] + i;
             return gameWorld.gameMap[next.y][next.x] == emptyTile;
-        });
+        }
+    );
+
+    // cout << "safeChoices" << endl;
+    // for (auto i: safeChoices) {
+    //     cout << i.toString() << ' ';
+    // }
 
     // Randomly choose one if there are more than one speeds
     if (safeChoices.empty()) {
