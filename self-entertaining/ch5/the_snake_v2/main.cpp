@@ -214,13 +214,23 @@ static void makeDecision(GameWorld& gameWorld) {
     // }
 
     // Filter speeds to avoid crashing
+    PointT preferOne = {0, 0};
     copy_if(
         possibleSpeeds.begin(),
         possibleSpeeds.end(),
         back_inserter(safeChoices),
         [&](PointT i) {
+            if (preferOne.x != 0 || preferOne.y != 0) {  // shortcuts
+                return false;
+            }
+
             PointT next = gameWorld.snake[0] + i;
-            return gameWorld.gameMap[next.y][next.x] == emptyTile;
+            if (gameWorld.gameMap[next.y][next.x] == foodTile) {
+                preferOne = i;
+                return true;
+            } else {
+                return gameWorld.gameMap[next.y][next.x] == emptyTile;
+            }
         }
     );
 
@@ -230,7 +240,9 @@ static void makeDecision(GameWorld& gameWorld) {
     // }
 
     // Randomly choose one if there are more than one speeds
-    if (safeChoices.empty()) {
+    if (preferOne.x != 0 || preferOne.y != 0) {
+        gameWorld.snakeSpeed = preferOne;
+    } else if (safeChoices.empty()) {
         pickOne(possibleSpeeds, gameWorld);
     } else {
         pickOne(safeChoices, gameWorld);
