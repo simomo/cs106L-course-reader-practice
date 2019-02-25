@@ -16,7 +16,7 @@
 
 using namespace std;
 
-const int maxFood = 20;
+const int maxFood = 6;
 const char emptyTile = ' ';
 const char wallTile = '#';
 const char foodTile = '$';
@@ -140,15 +140,21 @@ static PointT makePoint(int x, int y) {
  * the map
  */
 static bool moveSnake(GameWorld& gameWorld) {
-    PointT oldTail = gameWorld.snake.back();
-    gameWorld.snake.pop_back();
-
     PointT newHead = gameWorld.snake[0] + gameWorld.snakeSpeed;
     gameWorld.snake.push_front(newHead);
 
-    // update the snake in gameWorld.gameMap
-    gameWorld.gameMap[oldTail.y][oldTail.x] = emptyTile;
+    if (!(gameWorld.gameMap[newHead.y][newHead.x] == foodTile)) {
+        PointT oldTail = gameWorld.snake.back();
+        gameWorld.snake.pop_back();
+
+        gameWorld.gameMap[oldTail.y][oldTail.x] = emptyTile;
+    }
+
     gameWorld.gameMap[newHead.y][newHead.x] = snakeTile;
+
+    if (gameWorld.snake.size() == 6) {
+        return false;
+    }
     return true;
 }
 
