@@ -15,8 +15,8 @@ struct Ring {
 };
 
 int main() {
-    deque<int> init {1, 2, 3, 4, 5};
-    Ring ring {init};
+    deque<int> init({1, 2, 3, 4, 5});
+    Ring ring(init);
 
     return 0;
 }
