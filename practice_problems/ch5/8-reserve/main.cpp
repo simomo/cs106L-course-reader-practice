@@ -16,4 +16,32 @@
 #include <vector>
 #include <iostream>
 
-int main() {return 0;}
+#include <chrono>
+#include <ctime>
+
+#define TIMEIT(function) \
+    auto start = std::chrono::system_clock::now();\
+    for (int i=0; i<= 1000; ++i) {function();}\
+    auto end = std::chrono::system_clock::now();\
+    std::chrono::duration<double> elapsed_seconds = end-start;\
+    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+
+
+using namespace std;
+
+void test() {
+    deque<string> t(
+        {
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        }
+    );
+
+    t.push_back("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+}
+int main() {
+    TIMEIT(test);
+    return 0;
+}
