@@ -77,5 +77,10 @@ int main() {
     TIMEIT(vector_insert_reserve);
     TIMEIT(vector_insert_noreserve);
     TIMEIT(deque_pushback_noreserve);
+/*  elapsed time: 0.003989s
+    elapsed time: 0.004039s
+    elapsed time: 0.566814s
+    elapsed time: 0.553537s
+    elapsed time: 0.002033s */
     return 0;
 }
