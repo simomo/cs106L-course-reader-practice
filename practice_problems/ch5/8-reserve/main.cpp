@@ -21,28 +21,61 @@
 
 // Reference: https://stackoverflow.com/a/27856440/807695
 #define TIMEIT(function) \
-    auto start = std::chrono::system_clock::now();\
-    for (int i=0; i<= 1000; ++i) {function();}\
+    {auto start = std::chrono::system_clock::now();\
+    function();\
     auto end = std::chrono::system_clock::now();\
     std::chrono::duration<double> elapsed_seconds = end-start;\
-    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";}
 
 
 using namespace std;
 
-void test() {
-    deque<string> t(
-        {
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        }
-    );
+const string largeString = "a";
 
-    t.push_back("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+const int largeNum = 1000 * 10;
+
+void vector_pushback_noreserve() {
+    vector<string> v;
+    for (int i = 0; i <= largeNum; ++i) {
+        v.push_back(largeString);
+    }
 }
+
+void vector_pushback_reserve() {
+    vector<string> v;
+    v.reserve(largeNum);
+    for (int i = 0; i <= largeNum; ++i) {
+        v.push_back(largeString);
+    }
+}
+
+void vector_insert_noreserve() {
+    vector<string> v;
+    for (int i = 0; i <= largeNum; ++i) {
+        v.insert(v.begin(), largeString);
+    }
+}
+
+void vector_insert_reserve() {
+    vector<string> v;
+    v.reserve(largeNum);
+    for (int i = 0; i <= largeNum; ++i) {
+        v.insert(v.begin(), largeString);
+    }
+}
+
+void deque_pushback_noreserve() {
+    deque<string> deq;
+    for (int i = 0; i <= largeNum; ++i) {
+        deq.push_back(largeString);
+    }
+}
+
 int main() {
-    TIMEIT(test);
+    TIMEIT(vector_pushback_reserve);
+    TIMEIT(vector_pushback_noreserve);
+    TIMEIT(vector_insert_reserve);
+    TIMEIT(vector_insert_noreserve);
+    TIMEIT(deque_pushback_noreserve);
     return 0;
 }
