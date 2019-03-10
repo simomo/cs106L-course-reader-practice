@@ -23,19 +23,38 @@ struct Ring {
 
     int get_and_next() {
         int r = _deq[0];
-        
+
         _deq.pop_front();
         _deq.push_back(r);
         return r;
     }
 };
 
-int main() {
-    deque<int> init({1, 3, 5});
-    Ring ring(init);
-    for (int i=0; i<10; ++i) {
-        cout << ring.get_and_next() << endl;
+string VigenereCipher(string input, deque<int> theKey, bool is_encryptor) {
+    string ret;
+    Ring ring(theKey);
+    int tmpInt;
+    char tmpChar;
+    
+    for (char& c: input) {
+        tmpInt = (int) c;
+        if (is_encryptor) {
+            tmpInt += ring.get_and_next();
+        } else {
+            tmpInt -= ring.get_and_next();
+        }
+        tmpChar = (char) tmpInt;
+        ret += tmpChar;
     }
 
+    return ret;
+}
+
+int main() {
+    deque<int> init({1, 3, 7});
+    cout << VigenereCipher(VigenereCipher("Hi! I'm Duo Zhang", init, true), init, false) << endl;
+
+    // The casting will do mod automatically
+    cout << (char) 2 << (char) (2+256) << endl;
     return 0;
 }
