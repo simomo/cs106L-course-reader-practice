@@ -1,5 +1,5 @@
 cs106-1.xcodeproj/
-
+build-*/
 *.swp
 *.out
 *.exe
