@@ -29,12 +29,12 @@ defineTest(copyToDestdir) {
         win32:FILE ~= s,/,\\,g
         win32:DDIR ~= s,/,\\,g
 
-        !win32 {
+#        !win32 {
             copyResources.commands += cp -r '"'$$FILE'"' '"'$$DDIR'"' $$escape_expand(\\n\\t)
-        }
-        win32 {
-            copyResources.commands += xcopy '"'$$FILE'"' '"'$$DDIR'"' /e /y $$escape_expand(\\n\\t)
-        }
+#        }
+#        win32 {
+#            copyResources.commands += xcopy '"'$$FILE'"' '"'$$DDIR'"' /e /y $$escape_expand(\\n\\t)
+#        }
     }
     export(copyResources.commands)
 }
