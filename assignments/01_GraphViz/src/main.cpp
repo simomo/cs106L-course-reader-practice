@@ -5,7 +5,7 @@
 #include <cmath>
 #include "SimpleGraph.h"
 
-#define RAND_MAX 200
+#define PIX_MAX 200
 
 using std::cout;
 using std::cin;
@@ -53,8 +53,13 @@ void UserInputName(string& graphName, ifstream& graphFile) {
 }
 
 void inline randNodePos(Node& node) {
-    node.x = rand() % RAND_MAX;
-    node.y = rand() % RAND_MAX;
+    node.x = rand() % PIX_MAX;
+    node.y = rand() % PIX_MAX;
+}
+
+void clearConverter(stringstream& converter) {
+    converter.str("");
+    converter.clear();
 }
 
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
@@ -65,14 +70,17 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
     string oneLine;
 
     if (!getline(graphFile, nodesNumStr)) {return;}
+
     converter << nodesNumStr;
     converter >> nodesNum;
     graph.nodes.resize(nodesNum);
 
     while (getline(graphFile, oneLine)) {
         Edge edge;
+        clearConverter(converter);
         converter << oneLine;
         converter >> edge.start >> edge.end;  // end=8 start=578550992 why?!
+
         graph.edges.push_back(edge);
 
         randNodePos(graph.nodes[edge.start]);
