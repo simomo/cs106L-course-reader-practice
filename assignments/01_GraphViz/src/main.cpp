@@ -18,6 +18,8 @@ void Welcome();
 void UserInputName(string& graphName, ifstream& graphFile);
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph);
 
+const double kPi = 3.1415926535;
+
 // Main method
 int main() {
     Welcome();
@@ -57,6 +59,11 @@ void inline randNodePos(Node& node) {
     node.y = rand() % PIX_MAX;
 }
 
+void inline initNodePosInCircle(int index, int nodesNum, Node& node) {
+    node.x = cos(2*kPi*index/nodesNum);
+    node.y = sin(2*kPi*index/nodesNum);
+}
+
 void clearConverter(stringstream& converter) {
     converter.str("");
     converter.clear();
@@ -75,6 +82,7 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
     converter >> nodesNum;
     graph.nodes.resize(nodesNum);
 
+    int i = 0;
     while (getline(graphFile, oneLine)) {
         Edge edge;
         clearConverter(converter);
@@ -83,8 +91,11 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
 
         graph.edges.push_back(edge);
 
-        randNodePos(graph.nodes[edge.start]);
-        randNodePos(graph.nodes[edge.end]);
+        initNodePosInCircle(i, nodesNum, graph.nodes[edge.start]);
+        initNodePosInCircle(i, nodesNum, graph.nodes[edge.end]);
+//        randNodePos(graph.nodes[edge.start]);
+//        randNodePos(graph.nodes[edge.end]);
+        ++i;
     }
 }
 
