@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <iomanip>
 #include "SimpleGraph.h"
 
 #define PIX_MAX 200
@@ -18,7 +19,7 @@ void Welcome();
 void UserInputName(string& graphName, ifstream& graphFile);
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph);
 
-const double kPi = 3.1415926535;
+const double kPi = 3.14159265358979323;
 
 // Main method
 int main() {
@@ -38,11 +39,11 @@ int main() {
 void UserInputName(string& graphName, ifstream& graphFile) {
     while (true) {
         cout << "Please enter the graph file name: ";
-        if (!getline(cin, graphName)) {
-            cout << endl << "Cant get what you typed, please try again" << endl;
-            continue;
-        }
-
+//        if (!getline(cin, graphName)) {
+//            cout << endl << "Cant get what you typed, please try again" << endl;
+//            continue;
+//        }
+        graphName = "./res/10grid";
         graphFile.open(graphName);
         if (graphFile.is_open()) {
             break;
@@ -60,8 +61,18 @@ void inline randNodePos(Node& node) {
 }
 
 void inline initNodePosInCircle(int index, int nodesNum, Node& node) {
-    node.x = cos(2*kPi*index/nodesNum);
-    node.y = sin(2*kPi*index/nodesNum);
+    double theta = 2.0*kPi*((double) index)/((double) nodesNum);
+    double preTheta = 2.0*kPi*((double) index - 1)/((double) nodesNum);
+    node.x = cos(theta);
+    node.y = sin(theta);
+    double preX = cos(preTheta);
+    double preY = sin(preTheta);
+    double delta = std::sqrt(std::pow(node.x - preX, 2) + std::pow(node.y - preY, 2));
+    cout << "index: " << index << endl;
+    cout << std::setw(6) << "theta: " << theta << " preTheta: " << preTheta << " preX: " << preX << " preY: " << preY
+         << " X - preX: " << node.x - preX << " Y - preY: " << node.y - preY << " delta: " << delta << endl;
+
+
 }
 
 void clearConverter(stringstream& converter) {
@@ -82,7 +93,12 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
     converter >> nodesNum;
     graph.nodes.resize(nodesNum);
 
-    int i = 0;
+    // Setup nodes
+    for (int i=0; i < nodesNum; ++i) {
+        initNodePosInCircle(i, nodesNum, graph.nodes[i]);
+    }
+
+    // Setup edges
     while (getline(graphFile, oneLine)) {
         Edge edge;
         clearConverter(converter);
@@ -90,12 +106,6 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
         converter >> edge.start >> edge.end;  // end=8 start=578550992 why?!
 
         graph.edges.push_back(edge);
-
-        initNodePosInCircle(i, nodesNum, graph.nodes[edge.start]);
-        initNodePosInCircle(i, nodesNum, graph.nodes[edge.end]);
-//        randNodePos(graph.nodes[edge.start]);
-//        randNodePos(graph.nodes[edge.end]);
-        ++i;
     }
 }
 
