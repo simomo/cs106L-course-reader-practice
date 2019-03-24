@@ -24,7 +24,7 @@
  * list of nodes.
  */
 struct Node {
-  double x, y;
+  double x, y, deltaX, deltaY;
 };
 
 /**

@@ -4,6 +4,9 @@
 #include <sstream>
 #include <cmath>
 #include <iomanip>
+#include <chrono>
+#include <thread>
+#include <vector>
 #include "SimpleGraph.h"
 
 #define PIX_MAX 200
@@ -14,10 +17,15 @@ using std::endl;
 using std::string;
 using std::ifstream;
 using std::stringstream;
+using std::vector;
 
 void Welcome();
 void UserInputName(string& graphName, ifstream& graphFile);
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph);
+void oneIter(SimpleGraph& graph);
+void calculateNodesForce(vector<Node>::iterator& i, vector<Node>::iterator& j);
+void calculateEdgesForce(vector<Edge>::iterator& k);
+void updateAllNodes(vector<Node>& allNodes);
 
 const double kPi = 3.14159265358979323;
 
@@ -33,6 +41,11 @@ int main() {
     InitGraphVisualizer(graph);
     DrawGraph(graph);
     //TODO: Iteration & time elapse
+    for (int i=0; i < 100; ++i) {
+        oneIter(graph);
+        DrawGraph(graph);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
     return 0;
 }
 
@@ -51,8 +64,6 @@ void UserInputName(string& graphName, ifstream& graphFile) {
 
         cout << endl << "Cant open the file " << graphName << endl;
     }
-
-
 }
 
 void inline randNodePos(Node& node) {
@@ -61,18 +72,9 @@ void inline randNodePos(Node& node) {
 }
 
 void inline initNodePosInCircle(int index, int nodesNum, Node& node) {
-    double theta = 2.0*kPi*((double) index)/((double) nodesNum);
-    double preTheta = 2.0*kPi*((double) index - 1)/((double) nodesNum);
+    double theta = 2.0*kPi*index/nodesNum;
     node.x = cos(theta);
     node.y = sin(theta);
-    double preX = cos(preTheta);
-    double preY = sin(preTheta);
-    double delta = std::sqrt(std::pow(node.x - preX, 2) + std::pow(node.y - preY, 2));
-    cout << "index: " << index << endl;
-    cout << std::setw(6) << "theta: " << theta << " preTheta: " << preTheta << " preX: " << preX << " preY: " << preY
-         << " X - preX: " << node.x - preX << " Y - preY: " << node.y - preY << " delta: " << delta << endl;
-
-
 }
 
 void clearConverter(stringstream& converter) {
@@ -107,6 +109,23 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
 
         graph.edges.push_back(edge);
     }
+}
+
+void oneIter(SimpleGraph& graph) {
+    for (std::vector<Node>::iterator i = graph.nodes.begin(); i != graph.nodes.end(); ++i) {
+        for (std::vector<Node>::iterator j = graph.nodes.begin(); j != graph.nodes.end(); ++j) {
+            if (j == i) {
+                continue;
+            }
+            calculateNodesForce(i, j);
+        }
+    }
+
+    for (std::vector<Edge>::iterator k = graph.edges.begin(); k != graph.edges.end(); ++k) {
+        calculateEdgesForce(k);
+    }
+
+    updateAllNodes(graph.nodes);
 }
 
 /* Prints a message to the console welcoming the user and
