@@ -24,10 +24,12 @@ void UserInputName(string& graphName, ifstream& graphFile);
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph);
 void oneIter(SimpleGraph& graph);
 void calculateNodesForce(vector<Node>::iterator& i, vector<Node>::iterator& j);
-void calculateEdgesForce(vector<Edge>::iterator& k);
+void calculateEdgesForce(vector<Edge>::iterator& k, vector<Node>& allNodes);
 void updateAllNodes(vector<Node>& allNodes);
 
 const double kPi = 3.14159265358979323;
+const double kRepel = 0.001;
+const double kAttract = 0.001;
 
 // Main method
 int main() {
@@ -122,11 +124,32 @@ void oneIter(SimpleGraph& graph) {
     }
 
     for (std::vector<Edge>::iterator k = graph.edges.begin(); k != graph.edges.end(); ++k) {
-        calculateEdgesForce(k);
+        calculateEdgesForce(k, graph.nodes);
     }
 
     updateAllNodes(graph.nodes);
 }
+
+void calculateNodesForce(vector<Node>::iterator& i, vector<Node>::iterator& j) {
+    double f = kRepel / sqrt(pow((j->y - i->y), 2) + pow((j->x - i->x), 2));
+    double theta = atan2((j->y - i->y), (j->x - i->x));
+    i->deltaX -= f * cos(theta);
+    i->deltaY -= f * sin(theta);
+    j->deltaX += f * cos(theta);
+    j->deltaY += f * sin(theta);
+}
+
+void calculateEdgesForce(vector<Edge>::iterator& k, vector<Node>& allNodes) {
+    Node *i = &allNodes[k->start];
+    Node *j = &allNodes[k->end];
+    double f = kAttract * (pow((j->y - i->y), 2) + pow((j->x - i->x), 2));
+    double theta = atan2((j->y - i->y), (j->x - i->x));
+    i->deltaX += f * cos(theta);
+    i->deltaY += f * sin(theta);
+    j->deltaX -= f * cos(theta);
+    j->deltaY -= f * sin(theta);
+}
+void updateAllNodes(vector<Node>& allNodes) {}
 
 /* Prints a message to the console welcoming the user and
  * describing the program. */
