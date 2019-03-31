@@ -23,11 +23,11 @@ void Welcome();
 void UserInputName(string& graphName, ifstream& graphFile);
 void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph);
 void oneIter(SimpleGraph& graph);
-void calculateNodesForce(vector<Node>::iterator& i, vector<Node>::iterator& j);
+void calculateNodesForce(Node& i, Node& j);
 void calculateEdgesForce(vector<Edge>::iterator& k, vector<Node>& allNodes);
 void updateAllNodes(vector<Node>& allNodes);
 
-const double kPi = 3.14159265358979323;
+const double kPi = 3.1415926535897931;
 const double kRepel = 0.001;
 const double kAttract = 0.001;
 
@@ -42,11 +42,11 @@ int main() {
     LoadGraphFile(graphFile, graph);
     InitGraphVisualizer(graph);
     DrawGraph(graph);
-    //TODO: Iteration & time elapse
-    for (int i=0; i < 100; ++i) {
+    double pi = atan2(0, -2);
+    while(true) {
         oneIter(graph);
         DrawGraph(graph);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return 0;
 }
@@ -58,7 +58,7 @@ void UserInputName(string& graphName, ifstream& graphFile) {
 //            cout << endl << "Cant get what you typed, please try again" << endl;
 //            continue;
 //        }
-        graphName = "./res/10grid";
+        graphName = "./res/127binary-tree";
         graphFile.open(graphName);
         if (graphFile.is_open()) {
             break;
@@ -114,12 +114,13 @@ void LoadGraphFile(ifstream& graphFile, SimpleGraph& graph) {
 }
 
 void oneIter(SimpleGraph& graph) {
-    for (std::vector<Node>::iterator i = graph.nodes.begin(); i != graph.nodes.end(); ++i) {
-        for (std::vector<Node>::iterator j = graph.nodes.begin(); j != graph.nodes.end(); ++j) {
-            if (j == i) {
-                continue;
-            }
-            calculateNodesForce(i, j);
+    int nodesNum = graph.nodes.size();
+    for (int i = 0; i < nodesNum; ++i) {
+        if (i == (nodesNum - 1)) {
+            continue;
+        }
+        for (int j = i + 1; j < nodesNum; ++j) {
+            calculateNodesForce(graph.nodes[i], graph.nodes[j]);
         }
     }
 
@@ -130,13 +131,15 @@ void oneIter(SimpleGraph& graph) {
     updateAllNodes(graph.nodes);
 }
 
-void calculateNodesForce(vector<Node>::iterator& i, vector<Node>::iterator& j) {
-    double f = kRepel / sqrt(pow((j->y - i->y), 2) + pow((j->x - i->x), 2));
-    double theta = atan2((j->y - i->y), (j->x - i->x));
-    i->deltaX -= f * cos(theta);
-    i->deltaY -= f * sin(theta);
-    j->deltaX += f * cos(theta);
-    j->deltaY += f * sin(theta);
+void calculateNodesForce(Node& i, Node& j) {
+    double f = kRepel / sqrt(pow((j.y - i.y), 2) + pow((j.x - i.x), 2));
+    double theta = atan2((j.y - i.y), (j.x - i.x));
+    double fx = f * cos(theta);
+    double fy = f * sin(theta);
+    i.deltaX -= f * cos(theta);
+    i.deltaY -= f * sin(theta);
+    j.deltaX += f * cos(theta);
+    j.deltaY += f * sin(theta);
 }
 
 void calculateEdgesForce(vector<Edge>::iterator& k, vector<Node>& allNodes) {
@@ -149,7 +152,16 @@ void calculateEdgesForce(vector<Edge>::iterator& k, vector<Node>& allNodes) {
     j->deltaX -= f * cos(theta);
     j->deltaY -= f * sin(theta);
 }
-void updateAllNodes(vector<Node>& allNodes) {}
+
+void updateAllNodes(vector<Node>& allNodes) {
+    for (vector<Node>::iterator i = allNodes.begin(); i != allNodes.end(); ++i) {
+        i->x += i->deltaX;
+        i->y += i->deltaY;
+
+        i->deltaX = 0;
+        i->deltaY = 0;
+    }
+}
 
 /* Prints a message to the console welcoming the user and
  * describing the program. */
