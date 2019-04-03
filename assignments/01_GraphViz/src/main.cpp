@@ -38,6 +38,15 @@ int main() {
     string graphName;
     ifstream graphFile;
 
+    vector<int> a = {1, 2, 3};
+    vector<int>::iterator i;
+    for (i = a.begin(); i != a.end(); ++i) {
+        cout << *i << endl;
+    }
+    if (i == a.end()) {
+        cout << "aaaa" << endl;
+    }
+
     UserInputName(graphName, graphFile);
     LoadGraphFile(graphFile, graph);
     InitGraphVisualizer(graph);
