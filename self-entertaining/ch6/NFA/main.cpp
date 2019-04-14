@@ -1,5 +1,6 @@
 #include <map>
 #include <set>
+#include <iostream>
 
 using namespace std;
 
@@ -12,7 +13,24 @@ struct Nfa {
 };
 
 void initNfa(Nfa& nfa) {
+    // Init transcations
+    nfa.transaction.insert(make_pair(make_pair(0, '0'), 0));
+    nfa.transaction.insert(make_pair(make_pair(0, '1'), 0));
 
+    nfa.transaction.insert(make_pair(make_pair(0, '0'), 1));
+    nfa.transaction.insert(make_pair(make_pair(1, '0'), 2));
+
+    nfa.transaction.insert(make_pair(make_pair(0, '1'), 3));
+    nfa.transaction.insert(make_pair(make_pair(3, '1'), 4));
+
+    // Init startStatus
+    nfa.startStatus = 0;
+}
+
+void printSet(set<int>& s) {
+    for (set<int>::iterator i = s.begin(); i != s.end(); ++i) {
+        cout << *i << endl;
+    }
 }
 
 int main() {
@@ -35,9 +53,10 @@ int main() {
             }
         }
 
-        currentStatus.clear();
-        // currentStatus(incomingStatus);
+        currentStatus = incomingStatus;
     }
 
+    cout << "result: " << endl;
+    printSet(currentStatus);
     return 0;
 }
