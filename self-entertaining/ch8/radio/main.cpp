@@ -39,12 +39,15 @@ void Radio::setVolume(int v) {
 }
 
 double Radio::getPreset(int i) {
-    
-
+    assert(i <= 7 && i >= 1);
+    assert(preset.find(i) != preset.end());
+    return preset[i];
 }
 
 void Radio::setPreset(int i, double f) {
-
+    assert(i <= 7 && i >= 1);
+    assert(f <= 108.0 && f >= 78.5);
+    preset[i] = f;
 }
 
 int main() {
