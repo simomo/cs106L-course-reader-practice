@@ -18,7 +18,7 @@ public:
         first = f;
     }
 
-    secondType getSecond();
+    secondType getSecond() const;
     void setSecond(secondType s);
 
 private:
@@ -27,7 +27,9 @@ private:
 };
 
 template <typename firstType, typename secondType>
-secondType MyPair1<firstType, secondType>::getSecond() {
+secondType MyPair1<firstType, secondType>::getSecond() const {
+    first = 1;
+    // setSecond(2);
     return second;
 }
 
@@ -39,4 +41,9 @@ void MyPair1<firstType, secondType>::setSecond(secondType s) {
 int main () {
     mp.first = 0;
     mp.second = "aaa";
+
+    MyPair1<int, string> mp1;
+    // mp1.getSecond();  // Uncomment this, you will get a compile error!
+
+    return 0;
 }
