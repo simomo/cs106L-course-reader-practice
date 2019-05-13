@@ -2,6 +2,7 @@
 #define MYMAP
 
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -19,7 +20,11 @@ public:
     map<K, V> _map;
     int maxNum;
     const static int defaultMaxNum = 100;
+    static vector<int> anotherStaticData;
 };
+
+template <typename K, typename V>
+vector<int> MyMap<K, V>::anotherStaticData(10);
 
 template <typename K, typename V>
 MyMap<K, V>::MyMap():maxNum(defaultMaxNum) {}
@@ -36,7 +41,7 @@ typename map<K, V>::const_iterator MyMap<K, V>::find(K k) const {
 
 template <typename K, typename V>
 int MyMap<K, V>::giveMeTen() const {
-    return 10;
+    return 0;
 }
 
 #endif
