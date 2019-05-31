@@ -1,5 +1,7 @@
 #include <vector>
 
+using namespace std;
+
 template <typename T>
 class Grid {
 public:
@@ -31,11 +33,23 @@ template <typename T> Grid<T>::Grid(size_t rows, size_t cols) :
     cols(cols) {};
 
 template <typename T> void Grid<T>::clear() {
-    elems.clear();
+    // vector clear vs resize(0): https://stackoverflow.com/a/2738999
+    elems.resize(0, 0);
 }
 
 template <typename T> void Grid<T>::resize(size_t rows, size_t cols) {
-    elems.resize(rows, cols);
+    // elems.resize(rows * cols);
+
+    /* The only function that you may
+    find interesting is resize , which uses the vector 's assign member function.
+     assign is similar to resize in that it changes the size of the vector , but
+     unlike resize assign discards all of the current vector contents and
+     replaces them with the specified number of copies of the specified element.
+     The use of ElemType() as the second parameter to assign means that we will 
+     fill the vector with copies of the default value of the type being stored
+     (since ElemType() uses the temporary object syntax to create a new ElemType ).
+       */ 
+    elems.assign(rows * cols, ElemType());
     this.rows = rows;
     this.cols = cols;
 }
