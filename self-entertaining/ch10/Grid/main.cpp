@@ -19,6 +19,10 @@ public:
     T& getAt(size_t rows, size_t cols);
     const T& getAt(size_t rows, size_t cols) const;
 
+    // https://stackoverflow.com/a/18385553
+    typedef typename vector<T>::iterator iterator;
+    typedef typename vector<T>::const_iterator const_iterator;
+
 private:
     vector<T> elems;
     size_t rows;
@@ -38,6 +42,10 @@ template <typename T> void Grid<T>::clear() {
 }
 
 template <typename T> void Grid<T>::resize(size_t rows, size_t cols) {
+/*  vector resize vs assign
+    =======================
+    https://stackoverflow.com/a/19673757
+    Assign means replacing a vector with new properties ( size and elements) Reszie means holding old data and expanding the new vector with new elements this in case the new size is greater than the old one. otherwise shrink the size and eliminate the extra. */
     // elems.resize(rows * cols);
 
     /* The only function that you may
