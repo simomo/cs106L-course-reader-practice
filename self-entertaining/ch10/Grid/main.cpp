@@ -23,6 +23,11 @@ public:
     typedef typename vector<T>::iterator iterator;
     typedef typename vector<T>::const_iterator const_iterator;
 
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
+
 private:
     vector<T> elems;
     size_t rows;
@@ -57,7 +62,7 @@ template <typename T> void Grid<T>::resize(size_t rows, size_t cols) {
      fill the vector with copies of the default value of the type being stored
      (since ElemType() uses the temporary object syntax to create a new ElemType ).
        */ 
-    elems.assign(rows * cols, ElemType());
+    elems.assign(rows * cols, T());
     this.rows = rows;
     this.cols = cols;
 }
@@ -84,6 +89,22 @@ template <typename T> T& Grid<T>::getAt(size_t rows, size_t cols) {
 
 template <typename T> const T& Grid<T>::getAt(size_t rows, size_t cols) const {
     return elems[rows * this.cols + cols];
+}
+
+template <typename T> typename Grid<T>::iterator Grid<T>::begin() {
+    return elems.begin();
+}
+
+template <typename T> typename Grid<T>::const_iterator Grid<T>::begin() const {
+    return elems.begin();
+}
+
+template <typename T> typename Grid<T>::iterator Grid<T>::end() {
+    return elems.end();
+}
+
+template <typename T> typename Grid<T>::const_iterator Grid<T>::end() const {
+    return elems.end();
 }
 
 int main() {
