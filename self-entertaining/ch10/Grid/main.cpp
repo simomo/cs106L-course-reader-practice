@@ -28,6 +28,11 @@ public:
     iterator end();
     const_iterator end() const;
 
+    iterator row_begin(size_t row_num);
+    const_iterator row_begin(size_t row_num) const;
+    iterator row_end(size_t row_num);
+    const_iterator row_end(size_t row_num) const;
+
 private:
     vector<T> elems;
     size_t rows;
@@ -105,6 +110,22 @@ template <typename T> typename Grid<T>::iterator Grid<T>::end() {
 
 template <typename T> typename Grid<T>::const_iterator Grid<T>::end() const {
     return elems.end();
+}
+
+template <typename T> typename Grid<T>::iterator Grid<T>::row_begin(size_t row_num) {
+    return begin() + num_cols() * row_num;
+}
+
+template <typename T> typename Grid<T>::const_iterator Grid<T>::row_begin(size_t row_num) const {
+    return begin() + num_cols() * row_num;
+}
+
+template <typename T> typename Grid<T>::iterator Grid<T>::row_end(size_t row_num) {
+    return begin() + num_cols() * (row_num + 1);
+}
+
+template <typename T> typename Grid<T>::const_iterator Grid<T>::row_end(size_t row_num) const {
+    return row_begin(row_num) + num_cols();
 }
 
 int main() {
