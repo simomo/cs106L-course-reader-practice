@@ -33,6 +33,18 @@ public:
     iterator row_end(size_t row_num);
     const_iterator row_end(size_t row_num) const;
 
+    class MutableReference {
+    public:
+        friend class Grid;
+        T& operator[](size_t col);
+    
+    private:
+        MutableReference(Grid* grid, size_t row);
+
+        Grid* grid;  // We use pointer instead of a reference because `this` is a pointer
+        size_t row;
+    }
+
 private:
     vector<T> elems;
     size_t rows;
@@ -131,6 +143,9 @@ template <typename T> typename Grid<T>::const_iterator Grid<T>::row_end(size_t r
 int main() {
     Grid<int> g1;
     Grid<int> g2(2, 3);
+
+    fill(g2.begin(), g2.end(), 0);
+    // sort(g2.row_begin(0), g2.row_end(0));
 
     return 0;
 }
