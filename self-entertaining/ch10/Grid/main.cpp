@@ -10,5 +10,8 @@ int main() {
     // sort(g2.row_begin(0), g2.row_end(0));
     cout << g2[1][1] << endl;
 
+    const Grid<int> g3(2, 3);
+    // g3[1][2] = 0;  <-------- Error!
+
     return 0;
 }

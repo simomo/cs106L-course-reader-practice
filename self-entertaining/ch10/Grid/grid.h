@@ -40,7 +40,8 @@ public:
     public:
         friend class Grid;
         T& operator[](size_t col);
-    
+        const T& operator[](size_t col) const;
+
     private:
         MutableReference(Grid* grid, size_t row);
 
@@ -49,6 +50,7 @@ public:
     };
 
     MutableReference operator[](size_t row);
+    const MutableReference operator[](size_t row) const;
 
 private:
     vector<T> elems;
@@ -153,7 +155,15 @@ template <typename T> T& Grid<T>::MutableReference::operator[](size_t col) {
     return grid->getAt(row, col);
 }
 
+template <typename T> const T& Grid<T>::MutableReference::operator[](size_t col) const {
+    return grid->getAt(row, col);
+}
+
 template <typename T> typename Grid<T>::MutableReference Grid<T>::operator[](size_t row) {
+    return MutableReference(this, row);
+}
+
+template <typename T> const typename Grid<T>::MutableReference Grid<T>::operator[](size_t row) const {
     return MutableReference(this, row);
 }
 
