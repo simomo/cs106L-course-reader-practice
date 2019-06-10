@@ -52,6 +52,13 @@ public:
     MutableReference operator[](size_t row);
     const MutableReference operator[](size_t row) const;
 
+    bool operator< (const Grid& other) const;
+    bool operator<= (const Grid& other) const;
+    bool operator== (const Grid& other) const;
+    bool operator!= (const Grid& other) const;
+    bool operator>= (const Grid& other) const;
+    bool operator> (const Grid& other) const;
+
 private:
     vector<T> elems;
     size_t rows;
@@ -165,6 +172,38 @@ template <typename T> typename Grid<T>::MutableReference Grid<T>::operator[](siz
 
 template <typename T> const typename Grid<T>::MutableReference Grid<T>::operator[](size_t row) const {
     return MutableReference(this, row);
+}
+
+template <typename T> bool Grid<T>::operator< (const Grid<T>& other) const {
+    if (num_rows != other.num_cols) {
+        return num_rows < other.num_rows;
+    }
+
+    if (num_cols != other.num_cols) {
+        return num_cols < other.num_cols;
+    }
+
+    return lexicographical_compare(begin(), end(), other.begin(), other.end());
+}
+
+template <typename T> bool Grid<T>::operator<= (const Grid<T>& other) const {
+    return !(other < *this);
+}
+
+template <typename T> bool Grid<T>::operator== (const Grid<T>& other) const {
+    return !(*this < other) && !(other < *this);
+}
+
+template <typename T> bool Grid<T>::operator!= (const Grid<T>& other) const {
+    return !(*this < other) || !(other < *this);
+}
+
+template <typename T> bool Grid<T>::operator>= (const Grid<T>& other) const {
+    return !(*this < other);
+}
+
+template <typename T> bool Grid<T>::operator> (const Grid<T>& other) const {
+    return other < *this;
 }
 
 #endif
