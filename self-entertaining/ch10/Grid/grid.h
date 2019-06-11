@@ -175,12 +175,12 @@ template <typename T> const typename Grid<T>::MutableReference Grid<T>::operator
 }
 
 template <typename T> bool Grid<T>::operator< (const Grid<T>& other) const {
-    if (num_rows != other.num_cols) {
-        return num_rows < other.num_rows;
+    if (rows != other.num_rows()) {
+        return rows < other.num_rows();
     }
 
-    if (num_cols != other.num_cols) {
-        return num_cols < other.num_cols;
+    if (cols != other.num_cols()) {
+        return cols < other.num_cols();
     }
 
     return lexicographical_compare(begin(), end(), other.begin(), other.end());
