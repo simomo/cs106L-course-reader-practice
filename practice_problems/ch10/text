@@ -1,0 +1,20 @@
+# 2. What is an lvalue? An rvalue? Does the + operator yield an lvalue or an rvalue? How about the
+pointer dereference operator?
+
+(x) a + b = 1;
+so, rvalue.
+
+(/) *a = 1;
+so, lvalue.
+
+# 3. Are overloaded operators inherently more efficient than regular functions?
+
+I don't think so.
+
+# 4. Explain how to implement operator + in terms of operator += 
+
+```cpp
+const SomeType SomeType::operator+ (int other) {
+    return this->operator+=(other);
+}
+```
