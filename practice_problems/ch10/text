@@ -14,7 +14,98 @@ I don't think so.
 # 4. Explain how to implement operator + in terms of operator += 
 
 ```cpp
-const SomeType SomeType::operator+ (int other) {
+const SomeType SomeType::operator+ (SomeType other) {
     return this->operator+=(other);
+}
+```
+
+# 5. What is the signature of an overloaded operator for subtraction? For unary negation?
+
+## subtraction
+
+```cpp
+const SomeType SomeType::operator- (const SomeType other);
+```
+
+## unary negation
+
+```cpp
+const SomeType SomeType::operator- ();
+```
+
+# 6. How do you differentiate between the prefix and postfix versions of the ++ operator?
+
+```cpp
+SomeType& SomeType::operator++ ();
+
+const SomeType SomeType::operator++ (const SomeType dummy);
+```
+
+# 7. What does the -> operator return?
+
+```cpp
+// `someType->member` => `someType.operator->()->member`
+ElemType* SomeType::operator-> () const;
+```
+
+# 8. What is a friend function? How do you declare one?
+
+A friend function is a function which can access the private members of a particular class, to make it happen, this particular class's definition must contain the declarition of this "friend" relationship between the function and the class.
+
+```cpp
+class SomeType {
+public:
+    friend void FriendFunction(SomeType& param);
+};
+```
+
+# 9. How do you declare an overloaded stream insertion operator?
+
+*A very good introduction(even better than the reader).*
+
+https://medium.com/@nonuruzun/overloading-input-output-operators-in-c-a2a74c5dda8a
+
+In C++, stream insertion operator << is used for output and stream extraction operator >> is used for input.
+
+cout is an object of ostream class which is a compiler defined class. When we do cout<<obj where obj is an object of our class, the compiler first looks for an operator function in ostream, then it looks for a global function. One way to overload insertion operator is to modify ostream class which may not be a good idea. So we make a global method and if we want to allow them to access private data members of class, we must make them friend.
+
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Complex
+{
+private:
+    int real, imag;
+public:
+    Complex(int r = 0, int i =0)
+    {  real = r;   imag = i; }
+    friend ostream & operator << (ostream &out, const Complex &c);
+    friend istream & operator >> (istream &in,  Complex &c);
+};
+ 
+ostream & operator << (ostream &out, const Complex &c)
+{
+    out << c.real;
+    out << "+i" << c.imag << endl;
+    return out;
+}
+ 
+istream & operator >> (istream &in,  Complex &c)
+{
+    cout << "Enter Real Part ";
+    in >> c.real;
+    cout << "Enter Imagenory Part ";
+    in >> c.imag;
+    return in;
+}
+ 
+int main()
+{
+   Complex c1;
+   cin >> c1;
+   cout << "The complex object is ";
+   cout << c1;
+   return 0;
 }
 ```
