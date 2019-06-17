@@ -109,3 +109,26 @@ int main()
    return 0;
 }
 ```
+
+# 10. What is trichotomy and why is it important to C++ programmers?
+
+` one of a < b, a = b, a > b must hold for any a and b.`
+
+# 11. What is transitivity and why is it important to C++ programmers?
+
+`a > b && b > c => a > c`
+
+# 13. Why is it better to implement + in terms of += instead of += in terms of + ? (Hint: Think about the number of objects created using += and using + .)
+
+```cpp
+const SomeType SomeType::operator+(const SomeType& other) const {
+    SomeType result;  // One more object of `SomeType`
+    result.mInt = this->mInt + other.mInt;
+    return result;
+}
+
+SomeType& SomeType::operator+=(const SomeType& other) {
+    this->mInt = this->mInt + other.mInt;
+    return *this;
+}
+```
