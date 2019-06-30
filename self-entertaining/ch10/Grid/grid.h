@@ -191,7 +191,17 @@ template <typename T> bool Grid<T>::operator<= (const Grid<T>& other) const {
 }
 
 template <typename T> bool Grid<T>::operator== (const Grid<T>& other) const {
-    return !(*this < other) && !(other < *this);
+    // return !(*this < other) && !(other < *this);
+
+    // Practice 16: Rewrite the grid 's operator== function to directly check
+    //              whether the grid s are identical. Then rewrite operator!= in
+    //              terms of operator== .
+    if (rows != other.num_rows() || cols != other.num_cols()) {
+        return false;
+    }
+
+    pair<Grid<T>::const_iterator, Grid<T>::const_iterator> result = mismatch(begin(), end(), other.begin());
+    return result.first == end() && result.second == other.end();
 }
 
 template <typename T> bool Grid<T>::operator!= (const Grid<T>& other) const {
