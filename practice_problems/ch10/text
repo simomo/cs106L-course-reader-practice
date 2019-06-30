@@ -132,3 +132,16 @@ SomeType& SomeType::operator+=(const SomeType& other) {
     return *this;
 }
 ```
+
+# 15.
+
+```cpp
+class iterator {
+public:
+    bool operator== (const iterator& other) const;
+    bool operator!= (const iterator& other) const;
+    iterator& operator++ ();
+    ElemType& operator* () const;
+    ElemType* operator-> () const;
+};
+```
