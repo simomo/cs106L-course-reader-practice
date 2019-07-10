@@ -19,6 +19,7 @@ int main() {
     cout << (g2 < g4) << endl;
     cout << (g2 <= g4) << endl;
     cout << (g2 == g4) << endl;
+    cout << (g2 == g2) << endl;
     cout << (g2 != g4) << endl;
     cout << (g2 >= g4) << endl;
     cout << (g2 > g4) << endl;
