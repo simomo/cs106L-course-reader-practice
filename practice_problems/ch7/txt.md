@@ -41,3 +41,15 @@ Do something multiple(n) times.
 `--iter`
 `iter + n`
 `iter[n]`
+
+# 4. Can an input iterator be used wherever a forward iterator is expected? That is, if an algorithm requires a forward iterator, is it legal to provide it an input iterator instead? What about the other way around?
+
+It's legal to use a input iterator as a forward iterator, but the reverse is illegal.
+
+# 5. Why do we need back_insert_iterator and the like? That is, what would happen with the STL algorithms if these iterator adaptors didn't exist?
+
+Iterator adaptors are necessary abstrations of STL containers' capabilities, each one represents
+a range of containers with some same capabilities. It's essential for algorithms, without them,
+what should the type of algorithms's arguments be?
+
+# 6
