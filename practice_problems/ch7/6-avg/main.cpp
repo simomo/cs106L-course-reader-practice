@@ -8,11 +8,18 @@
 // distance .
 #include <fstream>
 #include <iostream>
+#include <vector>
+#include <numeric>
+#include <iterator>
+// #include <algorithm>
 
 using namespace std;
 
 int main() {
     ifstream f("data.txt");
+    vector<int> values;
+
+    // Approch 1
     if (!f.is_open()) {
         cout << "Open data.txt failed" << endl;
         return 1;
@@ -21,7 +28,16 @@ int main() {
     int oneInt;  // stringstream is not needed here.
     while (f >> oneInt) {
         cout << oneInt << endl;
+        values.push_back(oneInt);
     }
+
+    // Approch 2
+    istream_iterator<int> fi(f);
+    copy(fi, istream_iterator<int>(), back_inserter(values));
+
+
+    int sum = accumulate(values.begin(), values.end(), 0);
+    cout << "avg: " << sum / values.size() << endl;
 
     return 0;
 }
