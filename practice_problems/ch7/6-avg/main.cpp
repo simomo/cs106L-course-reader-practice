@@ -11,32 +11,42 @@
 #include <vector>
 #include <numeric>
 #include <iterator>
-// #include <algorithm>
+#include <algorithm>
 
 using namespace std;
+
+// Filter
+bool filter(int v) {
+    return !(v > 25 and v < 75);
+}
 
 int main() {
     ifstream f("data.txt");
     vector<int> values;
 
-    // Approch 1
-    if (!f.is_open()) {
-        cout << "Open data.txt failed" << endl;
-        return 1;
-    }
+    // Approch 1 of reading from file to a vector<int>
+    // if (!f.is_open()) {
+    //     cout << "Open data.txt failed" << endl;
+    //     return 1;
+    // }
 
-    int oneInt;  // stringstream is not needed here.
-    while (f >> oneInt) {
-        cout << oneInt << endl;
-        values.push_back(oneInt);
-    }
+    // int oneInt;  // stringstream is not needed here.
+    // while (f >> oneInt) {
+    //     cout << oneInt << endl;
+    //     values.push_back(oneInt);
+    // }
 
-    // Approch 2
+    // Approch 2 reading from file to a vector<int>
     istream_iterator<int> fi(f);
     copy(fi, istream_iterator<int>(), back_inserter(values));
+    // I was seeking a way to chain `copy` and `accumulate`, until I found this:
+    // https://stackoverflow.com/a/6743171, a very nice explaination for why
+    // I can't do that.
 
+    values.erase(remove_if(values.begin(), values.end(), filter), values.end());
 
     int sum = accumulate(values.begin(), values.end(), 0);
+    cout << "sum: " << sum << endl;
     cout << "avg: " << sum / values.size() << endl;
 
     return 0;
