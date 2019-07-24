@@ -36,18 +36,25 @@ int main() {
     //     values.push_back(oneInt);
     // }
 
-    // Approch 2 reading from file to a vector<int>
+    // Approch 2 of reading from file to a vector<int>
     istream_iterator<int> fi(f);
     copy(fi, istream_iterator<int>(), back_inserter(values));
     // I was seeking a way to chain `copy` and `accumulate`, until I found this:
     // https://stackoverflow.com/a/6743171, a very nice explaination for why
     // I can't do that.
 
-    values.erase(remove_if(values.begin(), values.end(), filter), values.end());
+    // Approch 1 of calculating the avg
+    // values.erase(remove_if(values.begin(), values.end(), filter), values.end());
+    // int sum = accumulate(values.begin(), values.end(), 0);
+    // cout << "sum: " << sum << endl;
+    // cout << "avg: " << sum / values.size() << endl;
 
-    int sum = accumulate(values.begin(), values.end(), 0);
-    cout << "sum: " << sum << endl;
-    cout << "avg: " << sum / values.size() << endl;
+    // Approch 2 of calculating the avg
+    sort(values.begin(), values.end());
+    vector<int>::iterator s = upper_bound(values.begin(), values.end(), 25);
+    vector<int>::iterator e = lower_bound(values.begin(), values.end(), 74);
+    int d = distance(s, e);
+    cout << "avg: " << accumulate(s, e, 0) / d << endl;
 
     return 0;
 }
