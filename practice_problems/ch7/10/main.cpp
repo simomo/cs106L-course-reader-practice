@@ -16,6 +16,10 @@ bool compare(pair<string, double> p1, pair<string, double> p2) {
     return p1.second < p2.second;
 }
 
+string extractName(pair<string, double> item) {
+    return item.first;
+}
+
 int main() {
     map<string, double> allMovies = {
         {"The 5th element", 9.4},
@@ -32,18 +36,12 @@ int main() {
     };
 
     set<string> results;
+
     if (allMovies.size() <= 10) {
-        // istream_iterator ii(allMovies);
-        for (map<string, double>::iterator i = allMovies.begin(); i != allMovies.end(); ++i) {
-            results.insert(i->first);
-        }
+        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), extractName);
     } else {
         sort(allMovies.begin(), allMovies.end(), compare);
-        int counter = 0;
-        for (map<string, double>::iterator i = allMovies.begin(); i != allMovies.end() || counter != 10; ++i, ++counter) {
-            results.insert(i->first);
-        }
-
+        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), extractName);
     }
 
     for (set<string>::iterator i = results.begin(); i != results.end(); ++i) {
