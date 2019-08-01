@@ -4,6 +4,7 @@
 //     in the map . (Hint: Remember that all elements in a map<string, double> are stored internally as
 //     pair<string, double> )
 #include <map>
+#include <vector>
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -12,12 +13,8 @@
 
 using namespace std;
 
-bool compare(pair<string, double> p1, pair<string, double> p2) {
-    return p1.second < p2.second;
-}
-
-string extractName(pair<string, double> item) {
-    return item.first;
+bool compare(vector<pair<string, double>>::iterator p1, vector<pair<string, double>>::iterator p2) {
+    return p1->second < p2->second;
 }
 
 int main() {
@@ -36,13 +33,17 @@ int main() {
     };
 
     set<string> results;
+    vector<pair<string, float> > allMoviesV;
 
+    transform(allMovies.begin(), allMovies.end(), back_inserter(allMoviesV), [](map<string, float>::iterator i) -> pair<string, float> {return *i;});
     if (allMovies.size() <= 10) {
-        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), extractName);
+        transform(allMoviesV.begin(), allMoviesV.end(), inserter(results, results.end()), [](vector<pair<string, float> >::iterator i)->string {return i->first;});
     } else {
         sort(allMovies.begin(), allMovies.end(), compare);
-        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), extractName);
+        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), [](vector<pair<string, float> >::iterator i)->string {return i->first;});
     }
+
+    // copy(results.begin(), results.end(), ostream_iterator(cout));
 
     for (set<string>::iterator i = results.begin(); i != results.end(); ++i) {
         cout << *i << endl;
