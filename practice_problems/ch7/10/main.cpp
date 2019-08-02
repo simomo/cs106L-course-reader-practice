@@ -13,8 +13,8 @@
 
 using namespace std;
 
-bool compare(vector<pair<string, double>>::iterator p1, vector<pair<string, double>>::iterator p2) {
-    return p1->second < p2->second;
+bool compare(pair<string, double> p1, pair<string, double> p2) {
+    return p1.second > p2.second;
 }
 
 int main() {
@@ -33,21 +33,18 @@ int main() {
     };
 
     set<string> results;
-    vector<pair<string, float> > allMoviesV;
+    vector<pair<string, double> > allMoviesV;
 
-    transform(allMovies.begin(), allMovies.end(), back_inserter(allMoviesV), [](map<string, float>::iterator i) -> pair<string, float> {return *i;});
+    // transform(allMovies.begin(), allMovies.end(), back_inserter(allMoviesV), [](pair<string, double> i) -> pair<string, double> {return i;});
+    copy(allMovies.begin(), allMovies.end(), back_inserter(allMoviesV));
     if (allMovies.size() <= 10) {
-        transform(allMoviesV.begin(), allMoviesV.end(), inserter(results, results.end()), [](vector<pair<string, float> >::iterator i)->string {return i->first;});
+        transform(allMoviesV.begin(), allMoviesV.end(), inserter(results, results.end()), [](pair<string, double> i)->string {return i.first;});
     } else {
-        sort(allMovies.begin(), allMovies.end(), compare);
-        transform(allMovies.begin(), allMovies.end(), inserter(results, results.end()), [](vector<pair<string, float> >::iterator i)->string {return i->first;});
+        sort(allMoviesV.begin(), allMoviesV.end(), compare);
+        transform(allMoviesV.begin(), allMoviesV.begin() + 10, inserter(results, results.end()), [](pair<string, double> i)->string {return i.first;});
     }
 
-    // copy(results.begin(), results.end(), ostream_iterator(cout));
-
-    for (set<string>::iterator i = results.begin(); i != results.end(); ++i) {
-        cout << *i << endl;
-    }
+    copy(results.begin(), results.end(), ostream_iterator<string>(cout, " "));
 
     return 0;
 }
