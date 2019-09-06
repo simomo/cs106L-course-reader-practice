@@ -11,11 +11,19 @@ int main() {
 
     string message = "HiIloveYou";
     string encryptedMsg(message);
-    transform(message.begin(), message.end(), encryptedMsg.begin(),
-        [](char c){
-            return tolower(c);
-        });
+    int i = 0;
+    for(i; i < message.size(); ++i) {
+        char c = message[i];
+        c = tolower(c);
 
+        size_t index = alphabet.find(c);
+        if (index == string::npos) {
+            continue;
+        }
+
+        encryptedMsg[i] = cipher[index];
+    }
+    cout << alphabet << endl;
     cout << cipher << endl;
     cout << message << endl;
     cout << encryptedMsg << endl;
