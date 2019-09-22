@@ -12,6 +12,7 @@ private:
     int m_i;
 };
 
+
 // If no constructors are declared in a class, the compiler provides an implicit inline default constructor
 class Box2 {
 public:
@@ -25,10 +26,49 @@ private:
     int anotherMember{0};  // right thing to do
 };
 
-int main() {
-    Box1 b1;
 
+// If any non-default constructors are declared, the compiler does not provide a default constructor:
+class Box3 {
+public:
+    Box3(int w, int h, int l): w(w), h(h), l(l) {}
+
+private:
+    int w;
+    int h;
+    int l;
+};
+
+
+// If your class requires more complex initialization, then you need to implement a custom copy constructor. For example, if a class member is a pointer then you need to define a copy constructor to allocate new memory and copy the values from the other's pointed-to object. The compiler-generated copy constructor simply copies the pointer, so that the new pointer still points to the other's memory location
+class Box4 {
+public:
+    Box4(Box4& box);  // Not recommand
+    Box4(const Box4& box);
+    Box4(volatile Box4& box);
+    Box4(volatile const Box4& box);
+
+    Box4(const Box4& box, int i = 1);  // Additional parameters OK if they have default values
+};
+
+
+// You can prevent your object from being copied by defining the copy constructor as deleted:
+class Box5 {
+public:
+    Box5() {};
+    Box5(Box5& box) = delete;
+};
+
+
+int main() {
+    Box1 b1();
     Box2 b2;
+    // Box2 b2();// (only) *compiler-generated default constructor* with parentheses causes error
     cout << "b2: " << b2.volume() << endl;  // since we didn't init the members, b2.volume() will return a random value
 
+    // Box3 box3;  // Error! No default constructor found!
+    // Box3 box3s[3];  // Another result of no default constructor
+    Box3 box3s[3] = {{1,2,3}, {4,5,6}, {7,8,9}};  // But this works
+
+    Box5 b51;
+    // Box5 b52(b51);  // Error! Attempting to reference a deleted function.
 }
