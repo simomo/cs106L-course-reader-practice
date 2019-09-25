@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -59,6 +61,29 @@ public:
 };
 
 
+// Move Constructor
+class Box6 {
+public:
+    Box6() {cout << "default" << endl;}
+    Box6(int w, int h, int l): w(w), h(h), l(l) {
+        cout << "int,int,int" << endl;
+    }
+    Box6(Box6& b) : w(b.w), h(b.h), l(b.l), contents(b.contents) {
+        cout << "copy" << endl;
+    }
+    Box6(Box6&& b) : w(b.w), h(b.h), l(b.l) {
+        contents = std::move(b.contents);
+        cout << "move" << endl;
+    }
+
+private:
+    int w{0};
+    int h{0};
+    int l{0};
+    vector<string> contents;
+};
+
+
 int main() {
     Box1 b1();
     Box2 b2;
@@ -71,4 +96,9 @@ int main() {
 
     Box5 b51;
     // Box5 b52(b51);  // Error! Attempting to reference a deleted function.
+
+    Box6 b61();
+    Box6 b62(1, 2, 3);
+    Box6 b63(b62);
+
 }
