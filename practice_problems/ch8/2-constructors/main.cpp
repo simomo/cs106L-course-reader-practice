@@ -8,7 +8,7 @@ using namespace std;
 class Box1 {
 public:
     // Box1() {};  // default constructor has no param
-    Box1(int i=1): m_i(i) {};  // default constructor has params with default values
+    // Box1(int i=1): m_i(i) {};  // default constructor has params with default values
 
 private:
     int m_i;
@@ -86,9 +86,9 @@ private:
 
 int main() {
     Box1 b1();
-    Box2 b2;
-    // Box2 b2();// (only) *compiler-generated default constructor* with parentheses causes error
-    cout << "b2: " << b2.volume() << endl;  // since we didn't init the members, b2.volume() will return a random value
+    Box2 b21;
+    Box2 b22();// This declares a function, instead of constructing a new object
+    cout << "b2: " << b21.volume() << endl;  // since we didn't init the members, b2.volume() will return a random value
 
     // Box3 box3;  // Error! No default constructor found!
     // Box3 box3s[3];  // Another result of no default constructor
@@ -97,7 +97,7 @@ int main() {
     Box5 b51;
     // Box5 b52(b51);  // Error! Attempting to reference a deleted function.
 
-    Box6 b61();
+    Box6 b61;
     Box6 b62(1, 2, 3);
     Box6 b63(b62);
 
